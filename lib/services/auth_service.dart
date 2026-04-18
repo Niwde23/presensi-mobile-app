@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  // ⚠️ PENTING: 
+  // ⚠️ PENTING:
   // Jika pakai Emulator Android, gunakan '10.0.2.2'
   // Jika pakai HP Fisik/Web, gunakan IP WiFi komputermu (misal: 192.168.1.10)
   static const String baseUrl = 'http://192.168.1.6:3000/api/auth';
@@ -13,10 +13,7 @@ class AuthService {
       final response = await http.post(
         Uri.parse('$baseUrl/login'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
+        body: jsonEncode({'email': email, 'password': password}),
       );
 
       final data = jsonDecode(response.body);
@@ -34,4 +31,4 @@ class AuthService {
       return {'success': false, 'message': 'Gagal terhubung ke server!'};
     }
   }
-}   
+}
