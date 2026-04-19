@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'dashboard_screen.dart';
+import 'hr_dashboard_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -28,7 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     if (result['success']) {
-      // Tampilkan pesan sukses
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Login Berhasil!'),
@@ -36,14 +37,22 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardScreen()),
-      );
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? role = prefs.getString('role');
 
-      // TODO: Pindah ke halaman Dashboard Presensi (Akan kita buat di Tahap 5)
-      print("Token berhasil disimpan, siap masuk dashboard!");
+      if (role == 'admin' || role == 'hr') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HRDashboardScreen()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardScreen()),
+        );
+      }
     } else {
+      //... sisa kode tetap sama
       // Tampilkan error (Email salah/Server mati)
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(result['message']), backgroundColor: Colors.red),

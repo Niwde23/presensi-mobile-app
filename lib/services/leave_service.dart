@@ -35,4 +35,46 @@ class LeaveService {
       return {'success': false, 'message': 'Gagal terhubung ke server!'};
     }
   }
+
+  // Mengambil semua data cuti (Untuk HR)
+  Future<List<dynamic>> getAllLeaves() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/all'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return data['data'];
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Mengubah status cuti (Untuk HR)
+  Future<bool> updateStatus(String id, String status) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
+      final response = await http.put(
+        Uri.parse('$baseUrl/update/$id'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({'status': status}),
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
+  }
 }
