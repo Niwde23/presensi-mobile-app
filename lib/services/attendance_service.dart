@@ -91,4 +91,31 @@ class AttendanceService {
       return [];
     }
   }
+
+  // Fungsi Check-In via QR Code
+  Future<Map<String, dynamic>> checkInQR(String qrData) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/checkin-qr'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({'qr_data': qrData}),
+      );
+
+      var data = jsonDecode(response.body);
+
+      if (response.statusCode == 201) {
+        return {'success': true, 'message': data['message']};
+      } else {
+        return {'success': false, 'message': data['message']};
+      }
+    } catch (e) {
+      return {'success': false, 'message': 'Gagal terhubung ke server!'};
+    }
+  }
 }

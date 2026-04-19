@@ -6,6 +6,7 @@ import '../services/attendance_service.dart';
 import 'login_screen.dart';
 import 'history_screen.dart';
 import 'leave_screen.dart';
+import 'qr_scanner_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -182,6 +183,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     label: Text("PENGAJUAN CUTI / IZIN"),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 15,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      // Tunggu hasil dari halaman scanner
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QRScannerScreen(),
+                        ),
+                      );
+
+                      // Tampilkan notifikasi jika ada kembalian data dari scanner
+                      if (result != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(result['message']),
+                            backgroundColor: result['success']
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                        );
+                      }
+                    },
+                    icon: Icon(Icons.qr_code_scanner),
+                    label: Text("ABSEN VIA QR CODE"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple,
                       foregroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(
                         horizontal: 40,
