@@ -68,4 +68,27 @@ class AttendanceService {
       return {'success': false, 'message': 'Gagal terhubung ke server!'};
     }
   }
+
+  // Fungsi Mengambil Riwayat Presensi
+  Future<List<dynamic>> getHistory() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/history'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return data['data']; // Mengembalikan List berisi data presensi
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print("Error fetching history: $e");
+      return [];
+    }
+  }
 }

@@ -4,6 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/attendance_service.dart';
 import 'login_screen.dart';
+import 'history_screen.dart';
+import 'leave_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -140,6 +142,46 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     label: Text("CHECK OUT (Pulang)"),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 15,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HistoryScreen(),
+                        ),
+                      );
+                    },
+                    icon: Icon(Icons.list_alt),
+                    label: Text("RIWAYAT PRESENSI"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueGrey,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 15,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LeaveScreen()),
+                      );
+                    },
+                    icon: Icon(Icons.edit_document),
+                    label: Text("PENGAJUAN CUTI / IZIN"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
                       foregroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(
                         horizontal: 40,
